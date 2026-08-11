@@ -157,7 +157,7 @@ export default function CanchaDetalle() {
   // estar fuera del rectángulo de juego (en las tribunas). Si hay postes más lejos
   // que el borde de la cancha, agrandamos el área dibujada para que entren, con un
   // margen extra de aire alrededor del punto más lejano.
-  const MARGEN_METROS = 5;
+  const MARGEN_METROS = 15;
   const maxAbsX = Math.max(cancha.largoX / 2, ...postes.map((p) => Math.abs(p.x))) + MARGEN_METROS;
   const maxAbsY = Math.max(cancha.anchoY / 2, ...postes.map((p) => Math.abs(p.y))) + MARGEN_METROS;
   const extentX = maxAbsX * 2;
