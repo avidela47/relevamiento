@@ -15,7 +15,14 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { canchaId, x, y, anguloRad, distanciaCentro, altura, modeloArmadoId, obstruido } = body;
 
-  if (!canchaId || x === undefined || y === undefined || !distanciaCentro || !altura || !modeloArmadoId) {
+  if (
+    !canchaId ||
+    x === undefined ||
+    y === undefined ||
+    distanciaCentro === undefined ||
+    altura === undefined ||
+    !modeloArmadoId
+  ) {
     return NextResponse.json(
       {
         error:

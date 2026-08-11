@@ -1,4 +1,4 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import { Schema, models, model } from "mongoose";
 
 // Catálogo de modelos de armados LED, ej: "SYD948-100-1200-3"
 // SY = marca (Synergia), D = tipo (deportivo) / P = común,

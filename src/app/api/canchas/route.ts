@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   const { cliente, nombre, anchoX, largoY, notas } = body;
 
-  if (!cliente || !nombre || !anchoX || !largoY) {
+  if (!cliente || !nombre || anchoX === undefined || largoY === undefined) {
     return NextResponse.json(
       { error: "Faltan campos obligatorios: cliente, nombre, anchoX, largoY" },
       { status: 400 }

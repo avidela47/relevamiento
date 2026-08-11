@@ -1,4 +1,4 @@
-import mongoose, { Schema, models, model, Types } from "mongoose";
+import { Schema, models, model, Types } from "mongoose";
 
 export type EstadoLuminaria = "activa" | "service" | "baja";
 
