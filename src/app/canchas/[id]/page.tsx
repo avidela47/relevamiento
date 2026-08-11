@@ -396,7 +396,7 @@ export default function CanchaDetalle() {
                 </Link>
                 <button
                   onClick={() => borrarPoste(p._id)}
-                  className="text-xs text-red-600 hover:underline"
+                  className="rounded bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-500/20"
                 >
                   Borrar
                 </button>

@@ -129,7 +129,7 @@ export default function Home() {
           <h1 className="text-xl font-semibold uppercase">Estadios relevados</h1>
           <button
             onClick={() => setMostrarForm((v) => !v)}
-            className="rounded bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--accent-hover)]"
+            className="rounded bg-(--accent)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-(--accent-hover)]"
           >
             {mostrarForm ? "Cancelar" : "+ Nuevo estadio"}
           </button>
@@ -209,7 +209,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={guardando}
-              className="rounded bg-[var(--accent)] px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--accent-hover)] disabled:opacity-50 sm:col-span-2"
+              className="rounded bg-(--accent)] px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-(--accent-hover)] disabled:opacity-50 sm:col-span-2"
             >
               {guardando ? "Guardando..." : "Crear estadio"}
             </button>
@@ -261,7 +261,7 @@ export default function Home() {
                 ) : (
                   <button
                     onClick={() => setConfirmarBorrado(c._id)}
-                    className="text-xs text-red-600 hover:underline"
+                    className="rounded bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-500/20"
                   >
                     Borrar
                   </button>
