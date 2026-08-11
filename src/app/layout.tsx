@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const NAV = [
-  { href: "/", label: "Canchas" },
+  { href: "/", label: "Estadios" },
   { href: "/modelos", label: "Modelos" },
 ];
 
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-(--background)">
+      <body className="min-h-full bg-background">
         <header className="border-b-2 border-(--accent) bg-white">
           <div className="flex w-full flex-wrap items-center justify-between gap-2 px-4 py-2 sm:px-6">
             <Link href="/">
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded px-4 py-2 text-sm font-medium text-(--foreground) hover:bg-zinc-100"
+                  className="rounded bg-[#14746f] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#0f5a56]"
                 >
                   {item.label}
                 </Link>

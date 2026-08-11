@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   await connectDB();
   const body = await req.json();
 
-  const { cliente, nombre, largoX, anchoY, notas } = body;
+  const { cliente, nombre, tipo, largoX, anchoY, escudoUrl, notas } = body;
 
   if (!cliente || !nombre || largoX === undefined || anchoY === undefined) {
     return NextResponse.json(
@@ -24,8 +24,10 @@ export async function POST(req: NextRequest) {
   const cancha = await Cancha.create({
     cliente,
     nombre,
+    tipo: tipo || "futbol",
     largoX,
     anchoY,
+    escudoUrl: escudoUrl || undefined,
     notas,
     fechaRelevamiento: new Date(),
   });

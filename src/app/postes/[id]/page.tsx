@@ -85,7 +85,7 @@ export default function PosteDetalle() {
     <div className="flex flex-col gap-6">
       <div>
         <Link href={`/canchas/${poste.canchaId}`} className="text-sm text-zinc-500 hover:text-zinc-900">
-          ← Volver a la cancha
+          ← Volver al estadio
         </Link>
         <h1 className="mt-1 text-xl font-semibold">
           Poste x={poste.x.toFixed(2)} y={poste.y.toFixed(2)}

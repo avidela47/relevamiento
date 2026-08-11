@@ -8,8 +8,10 @@ type Cancha = {
   _id: string;
   cliente: string;
   nombre: string;
+  tipo: "futbol" | "tenis" | "padel" | "otra";
   largoX: number;
   anchoY: number;
+  escudoUrl?: string;
   notas?: string;
 };
 
@@ -66,7 +68,7 @@ export default function CanchaDetalle() {
         fetch(`/api/postes?canchaId=${canchaId}`),
         fetch(`/api/modelos`),
       ]);
-      if (!rCancha.ok) throw new Error("No se encontró la cancha");
+      if (!rCancha.ok) throw new Error("No se encontró el estadio");
       setCancha(await rCancha.json());
       setPostes(await rPostes.json());
       setModelos(await rModelos.json());
@@ -149,7 +151,7 @@ export default function CanchaDetalle() {
   if (error || !cancha)
     return (
       <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
-        {error || "Cancha no encontrada"}
+        {error || "Estadio no encontrado"}
       </p>
     );
 
@@ -166,6 +168,12 @@ export default function CanchaDetalle() {
   const W = 400;
   const H = (extentY / extentX) * W;
   const escala = W / extentX; // px por metro (misma escala en X e Y, no distorsiona)
+
+  // Las marcas reglamentarias FIFA (área de 40m de ancho, etc.) solo tienen sentido
+  // en una cancha de fútbol de tamaño real. En tenis/pádel, u otra, o una cancha muy
+  // chica cargada por error, solo dibujamos el rectángulo simple.
+  const esFutbolReglamentario =
+    cancha.tipo === "futbol" && cancha.largoX >= 40 && cancha.anchoY >= 20;
 
   // Esquinas de la cancha real (no del lienzo) para dibujar el rectángulo verde de juego.
   const canchaRect = (() => {
@@ -256,7 +264,7 @@ export default function CanchaDetalle() {
     <div className="flex flex-col gap-8">
       <div>
         <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-900">
-          ← Canchas
+          ← Estadios
         </Link>
         <h1 className="mt-1 text-xl font-semibold">{cancha.nombre}</h1>
         <p className="text-sm text-zinc-500">
@@ -293,61 +301,66 @@ export default function CanchaDetalle() {
           {/* Rectángulo de juego, en su tamaño real dentro del lienzo (que puede ser más grande si hay postes fuera de la cancha) */}
           <rect {...canchaRect} fill="#f0fdf4" stroke="#86efac" strokeWidth={2} />
 
-          {/* Línea media */}
-          <line x1={W / 2} y1={0} x2={W / 2} y2={H} stroke="#4b5563" strokeWidth={1.25} />
+          {esFutbolReglamentario ? (
+            <>
+              {/* Línea media */}
+              <line x1={W / 2} y1={0} x2={W / 2} y2={H} stroke="#4b5563" strokeWidth={1.25} />
 
-          {/* Círculo central */}
-          <circle
-            cx={W / 2}
-            cy={H / 2}
-            r={RADIO_CIRCULO_CENTRAL * escala}
-            fill="none"
-            stroke="#4b5563"
-            strokeWidth={1.25}
-          />
-          <circle cx={W / 2} cy={H / 2} r={2.5} fill="#4b5563" />
-
-          {/* Áreas y arcos de ambos lados */}
-          {[arcoDer, arcoIzq].map((a, i) => (
-            <g key={i}>
-              <rect
-                {...a.areaGrande}
-                fill="none"
-                stroke="#4b5563"
-                strokeWidth={1.25}
-              />
-              <rect
-                {...a.areaChica}
-                fill="none"
-                stroke="#4b5563"
-                strokeWidth={1.25}
-              />
-              <circle cx={a.spotPx.px} cy={a.spotPx.py} r={2} fill="#4b5563" />
+              {/* Círculo central */}
               <circle
-                cx={a.spotPx.px}
-                cy={a.spotPx.py}
+                cx={W / 2}
+                cy={H / 2}
                 r={RADIO_CIRCULO_CENTRAL * escala}
                 fill="none"
                 stroke="#4b5563"
                 strokeWidth={1.25}
-                clipPath={`url(#${a.clipId})`}
               />
-            </g>
-          ))}
+              <circle cx={W / 2} cy={H / 2} r={2.5} fill="#4b5563" />
 
-          {/* Arcos de córner */}
-          {esquinas.map((e) => (
-            <circle
-              key={e.clipId}
-              cx={e.cx}
-              cy={e.cy}
-              r={e.r}
-              fill="none"
-              stroke="#4b5563"
-              strokeWidth={1.25}
-              clipPath={`url(#${e.clipId})`}
-            />
-          ))}
+              {/* Áreas y arcos de ambos lados */}
+              {[arcoDer, arcoIzq].map((a, i) => (
+                <g key={i}>
+                  <rect {...a.areaGrande} fill="none" stroke="#4b5563" strokeWidth={1.25} />
+                  <rect {...a.areaChica} fill="none" stroke="#4b5563" strokeWidth={1.25} />
+                  <circle cx={a.spotPx.px} cy={a.spotPx.py} r={2} fill="#4b5563" />
+                  <circle
+                    cx={a.spotPx.px}
+                    cy={a.spotPx.py}
+                    r={RADIO_CIRCULO_CENTRAL * escala}
+                    fill="none"
+                    stroke="#4b5563"
+                    strokeWidth={1.25}
+                    clipPath={`url(#${a.clipId})`}
+                  />
+                </g>
+              ))}
+
+              {/* Arcos de córner */}
+              {esquinas.map((e) => (
+                <circle
+                  key={e.clipId}
+                  cx={e.cx}
+                  cy={e.cy}
+                  r={e.r}
+                  fill="none"
+                  stroke="#4b5563"
+                  strokeWidth={1.25}
+                  clipPath={`url(#${e.clipId})`}
+                />
+              ))}
+            </>
+          ) : (
+            <text
+              x={(canchaRect.x + canchaRect.width / 2)}
+              y={(canchaRect.y + canchaRect.height / 2)}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={12}
+              fill="#6b7280"
+            >
+              {cancha.largoX} x {cancha.anchoY} m
+            </text>
+          )}
 
           {postes.map((p) => {
             const { px, py } = aSvg(p.x, p.y, extentX, extentY, W, H);
