@@ -148,7 +148,7 @@ export default function ModelosPage() {
 
       <section className="rounded border border-zinc-200 bg-white p-4">
         <h2 className="mb-3 font-semibold">Nuevo modelo</h2>
-        <form onSubmit={crearModelo} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <form onSubmit={crearModelo} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <input
             required
             placeholder="Código (ej: SYD948-100-1200-3)"
@@ -213,7 +213,7 @@ export default function ModelosPage() {
           <button
             type="submit"
             disabled={guardando}
-            className="col-span-2 rounded bg-[var(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50 sm:col-span-4"
+            className="col-span-2 rounded bg-(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-(--accent-hover)] disabled:opacity-50 sm:col-span-4"
           >
             {guardando ? "Guardando..." : "Agregar modelo"}
           </button>

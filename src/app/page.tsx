@@ -7,8 +7,8 @@ type Cancha = {
   _id: string;
   cliente: string;
   nombre: string;
-  anchoX: number;
-  largoY: number;
+  largoX: number;
+  anchoY: number;
   fechaRelevamiento: string;
   notas?: string;
 };
@@ -20,8 +20,8 @@ export default function Home() {
 
   const [cliente, setCliente] = useState("");
   const [nombre, setNombre] = useState("");
-  const [anchoX, setAnchoX] = useState("");
-  const [largoY, setLargoY] = useState("");
+  const [largoX, setLargoX] = useState("");
+  const [anchoY, setAnchoY] = useState("");
   const [notas, setNotas] = useState("");
   const [guardando, setGuardando] = useState(false);
 
@@ -55,8 +55,8 @@ export default function Home() {
         body: JSON.stringify({
           cliente,
           nombre,
-          anchoX: Number(anchoX),
-          largoY: Number(largoY),
+          largoX: Number(largoX),
+          anchoY: Number(anchoY),
           notas: notas || undefined,
         }),
       });
@@ -66,8 +66,8 @@ export default function Home() {
       }
       setCliente("");
       setNombre("");
-      setAnchoX("");
-      setLargoY("");
+      setLargoX("");
+      setAnchoY("");
       setNotas("");
       await cargarCanchas();
     } catch (err) {
@@ -103,7 +103,7 @@ export default function Home() {
                     <p className="text-sm text-zinc-500">{c.cliente}</p>
                   </div>
                   <p className="text-sm text-zinc-500">
-                    {c.anchoX} x {c.largoY} m
+                    {c.largoX} x {c.anchoY} m
                   </p>
                 </Link>
               </li>
@@ -114,7 +114,7 @@ export default function Home() {
 
       <section className="rounded border border-zinc-200 bg-white p-4">
         <h2 className="mb-3 font-semibold">Nueva cancha</h2>
-        <form onSubmit={crearCancha} className="grid grid-cols-2 gap-3">
+        <form onSubmit={crearCancha} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <input
             required
             placeholder="Cliente"
@@ -133,18 +133,18 @@ export default function Home() {
             required
             type="number"
             step="0.01"
-            placeholder="Ancho X (m)"
-            value={anchoX}
-            onChange={(e) => setAnchoX(e.target.value)}
+            placeholder="Largo X (m)"
+            value={largoX}
+            onChange={(e) => setLargoX(e.target.value)}
             className="rounded border border-zinc-300 px-3 py-2 text-sm"
           />
           <input
             required
             type="number"
             step="0.01"
-            placeholder="Largo Y (m)"
-            value={largoY}
-            onChange={(e) => setLargoY(e.target.value)}
+            placeholder="Ancho Y (m)"
+            value={anchoY}
+            onChange={(e) => setAnchoY(e.target.value)}
             className="rounded border border-zinc-300 px-3 py-2 text-sm"
           />
           <input
@@ -156,7 +156,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={guardando}
-            className="col-span-2 rounded bg-[var(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50"
+            className="col-span-2 rounded bg-(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-(--accent-hover)] disabled:opacity-50"
           >
             {guardando ? "Guardando..." : "Crear cancha"}
           </button>

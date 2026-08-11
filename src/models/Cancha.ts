@@ -3,8 +3,8 @@ import { Schema, models, model } from "mongoose";
 export interface ICancha {
   cliente: string;
   nombre: string;
-  anchoX: number; // metros, medida real de la cancha (eje X)
-  largoY: number; // metros, medida real de la cancha (eje Y)
+  largoX: number; // metros, medida real de la cancha (eje X = largo)
+  anchoY: number; // metros, medida real de la cancha (eje Y = ancho)
   fechaRelevamiento: Date;
   notas?: string;
 }
@@ -13,8 +13,8 @@ const CanchaSchema = new Schema<ICancha>(
   {
     cliente: { type: String, required: true, trim: true },
     nombre: { type: String, required: true, trim: true },
-    anchoX: { type: Number, required: true, min: 0 },
-    largoY: { type: Number, required: true, min: 0 },
+    largoX: { type: Number, required: true, min: 0 },
+    anchoY: { type: Number, required: true, min: 0 },
     fechaRelevamiento: { type: Date, required: true, default: Date.now },
     notas: { type: String, trim: true },
   },

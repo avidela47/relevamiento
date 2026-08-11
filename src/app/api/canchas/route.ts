@@ -12,11 +12,11 @@ export async function POST(req: NextRequest) {
   await connectDB();
   const body = await req.json();
 
-  const { cliente, nombre, anchoX, largoY, notas } = body;
+  const { cliente, nombre, largoX, anchoY, notas } = body;
 
-  if (!cliente || !nombre || anchoX === undefined || largoY === undefined) {
+  if (!cliente || !nombre || largoX === undefined || anchoY === undefined) {
     return NextResponse.json(
-      { error: "Faltan campos obligatorios: cliente, nombre, anchoX, largoY" },
+      { error: "Faltan campos obligatorios: cliente, nombre, largoX, anchoY" },
       { status: 400 }
     );
   }
@@ -24,8 +24,8 @@ export async function POST(req: NextRequest) {
   const cancha = await Cancha.create({
     cliente,
     nombre,
-    anchoX,
-    largoY,
+    largoX,
+    anchoY,
     notas,
     fechaRelevamiento: new Date(),
   });
