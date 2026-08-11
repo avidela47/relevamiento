@@ -158,8 +158,10 @@ export default function CanchaDetalle() {
   // El lienzo no es solo el tamaño de la cancha: las torres de iluminación suelen
   // estar fuera del rectángulo de juego (en las tribunas). Si hay postes más lejos
   // que el borde de la cancha, agrandamos el área dibujada para que entren, con un
-  // margen extra de aire alrededor del punto más lejano.
-  const MARGEN_METROS = 15;
+  // margen extra de aire alrededor del punto más lejano. Para tenis el margen es
+  // más chico (proporcional), porque una cancha de tenis es mucho más chica que
+  // un estadio y el margen fijo de fútbol la dejaba minúscula en el dibujo.
+  const MARGEN_METROS = cancha.tipo === "tenis" ? Math.max(2, cancha.largoX * 0.06) : 15;
   const maxAbsX = Math.max(cancha.largoX / 2, ...postes.map((p) => Math.abs(p.x))) + MARGEN_METROS;
   const maxAbsY = Math.max(cancha.anchoY / 2, ...postes.map((p) => Math.abs(p.y))) + MARGEN_METROS;
   const extentX = maxAbsX * 2;
@@ -174,6 +176,13 @@ export default function CanchaDetalle() {
   // chica cargada por error, solo dibujamos el rectángulo simple.
   const esFutbolReglamentario =
     cancha.tipo === "futbol" && cancha.largoX >= 40 && cancha.anchoY >= 20;
+
+  // Medidas reglamentarias de tenis (ITF), en metros. Se dibujan siempre con estos
+  // valores fijos, sea cual sea la medida real que hayas cargado para la cancha.
+  const esTenisReglamentario =
+    cancha.tipo === "tenis" && cancha.largoX >= 15 && cancha.anchoY >= 6;
+  const TENIS_MEDIO_ANCHO_SINGLE = 8.23 / 2; // 4.115
+  const TENIS_LARGO_SERVICIO = 6.4; // desde la red hasta la línea de saque
 
   // Esquinas de la cancha real (no del lienzo) para dibujar el rectángulo verde de juego.
   const canchaRect = (() => {
@@ -349,6 +358,54 @@ export default function CanchaDetalle() {
                 />
               ))}
             </>
+          ) : esTenisReglamentario ? (
+            <>
+              {/* Red, en el centro */}
+              <line
+                x1={W / 2}
+                y1={aSvg(0, TENIS_MEDIO_ANCHO_SINGLE + 1, extentX, extentY, W, H).py}
+                x2={W / 2}
+                y2={aSvg(0, -(TENIS_MEDIO_ANCHO_SINGLE + 1), extentX, extentY, W, H).py}
+                stroke="#4b5563"
+                strokeWidth={2}
+              />
+
+              {/* Líneas de individuales (a todo lo largo de la cancha) */}
+              {[TENIS_MEDIO_ANCHO_SINGLE, -TENIS_MEDIO_ANCHO_SINGLE].map((y) => (
+                <line
+                  key={y}
+                  x1={aSvg(-cancha.largoX / 2, y, extentX, extentY, W, H).px}
+                  y1={aSvg(0, y, extentX, extentY, W, H).py}
+                  x2={aSvg(cancha.largoX / 2, y, extentX, extentY, W, H).px}
+                  y2={aSvg(0, y, extentX, extentY, W, H).py}
+                  stroke="#4b5563"
+                  strokeWidth={1.25}
+                />
+              ))}
+
+              {/* Líneas de saque, a ambos lados de la red */}
+              {[TENIS_LARGO_SERVICIO, -TENIS_LARGO_SERVICIO].map((x) => (
+                <line
+                  key={x}
+                  x1={aSvg(x, TENIS_MEDIO_ANCHO_SINGLE, extentX, extentY, W, H).px}
+                  y1={aSvg(x, TENIS_MEDIO_ANCHO_SINGLE, extentX, extentY, W, H).py}
+                  x2={aSvg(x, -TENIS_MEDIO_ANCHO_SINGLE, extentX, extentY, W, H).px}
+                  y2={aSvg(x, -TENIS_MEDIO_ANCHO_SINGLE, extentX, extentY, W, H).py}
+                  stroke="#4b5563"
+                  strokeWidth={1.25}
+                />
+              ))}
+
+              {/* Línea central de saque, entre las dos líneas de saque */}
+              <line
+                x1={aSvg(-TENIS_LARGO_SERVICIO, 0, extentX, extentY, W, H).px}
+                y1={aSvg(-TENIS_LARGO_SERVICIO, 0, extentX, extentY, W, H).py}
+                x2={aSvg(TENIS_LARGO_SERVICIO, 0, extentX, extentY, W, H).px}
+                y2={aSvg(TENIS_LARGO_SERVICIO, 0, extentX, extentY, W, H).py}
+                stroke="#4b5563"
+                strokeWidth={1.25}
+              />
+            </>
           ) : (
             <text
               x={(canchaRect.x + canchaRect.width / 2)}
@@ -378,7 +435,14 @@ export default function CanchaDetalle() {
             );
           })}
         </svg>
-        
+        <p className="mt-2 text-xs text-zinc-500">
+          {esFutbolReglamentario
+            ? "Marcas reglamentarias FIFA a escala."
+            : esTenisReglamentario
+              ? "Marcas reglamentarias de tenis (ITF) a escala."
+              : "Rectángulo simple con la medida cargada."}{" "}
+          Naranja = poste obstruido, azul = poste normal.
+        </p>
       </section>
 
       <section className="rounded border border-zinc-200 bg-white p-4">
@@ -518,7 +582,7 @@ export default function CanchaDetalle() {
             <button
               type="submit"
               disabled={guardando}
-              className="col-span-2 rounded bg-(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-(--accent-hover)] disabled:opacity-50"
+              className="col-span-2 rounded bg-[var(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50"
             >
               {guardando ? "Guardando..." : "Agregar poste"}
             </button>

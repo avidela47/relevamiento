@@ -19,6 +19,7 @@ export default function ModelosPage() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [guardando, setGuardando] = useState(false);
+  const [mostrarForm, setMostrarForm] = useState(false);
 
   const [form, setForm] = useState({
     codigo: "",
@@ -89,6 +90,7 @@ export default function ModelosPage() {
         potenciaW: "",
         temperaturaColorK: "",
       });
+      setMostrarForm(false);
       await cargarModelos();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido");
@@ -100,7 +102,15 @@ export default function ModelosPage() {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <h1 className="text-xl font-semibold mb-4">Catálogo de modelos de armado</h1>
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold">Catálogo de modelos de armado</h1>
+          <button
+            onClick={() => setMostrarForm((v) => !v)}
+            className="rounded bg-[#14746f] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#0f5a56]"
+          >
+            {mostrarForm ? "Cancelar" : "+ Agregar modelo"}
+          </button>
+        </div>
         {error && (
           <p className="mb-3 rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
             {error}
@@ -146,6 +156,7 @@ export default function ModelosPage() {
         )}
       </section>
 
+      {mostrarForm && (
       <section className="rounded border border-zinc-200 bg-white p-4">
         <h2 className="mb-3 font-semibold">Nuevo modelo</h2>
         <form onSubmit={crearModelo} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -213,12 +224,13 @@ export default function ModelosPage() {
           <button
             type="submit"
             disabled={guardando}
-            className="col-span-2 rounded bg-(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-(--accent-hover)] disabled:opacity-50 sm:col-span-4"
+            className="col-span-2 rounded bg-[var(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50 sm:col-span-4"
           >
             {guardando ? "Guardando..." : "Agregar modelo"}
           </button>
         </form>
       </section>
+      )}
     </div>
   );
 }
