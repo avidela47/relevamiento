@@ -173,9 +173,9 @@ export default function Home() {
             <div className="flex items-center gap-3 rounded border border-zinc-300 px-3 py-2 text-sm">
               {escudoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={escudoUrl} alt="" className="h-8 w-8 rounded object-cover" />
+                <img src={escudoUrl} alt="" className="h-12 w-12 rounded-full border border-zinc-200 object-cover" />
               ) : (
-                <div className="h-8 w-8 rounded bg-zinc-100" />
+                <div className="h-12 w-12 rounded-full border border-zinc-200 bg-zinc-100"/>
               )}
               <label className="flex-1 cursor-pointer text-zinc-600">
                 {subiendoEscudo ? "Cargando..." : "Escudo del club (opcional)"}
@@ -226,9 +226,9 @@ export default function Home() {
               <li key={c._id} className="flex items-center gap-3 px-4 py-3 hover:bg-zinc-50">
                 {c.escudoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={c.escudoUrl} alt="" className="h-8 w-8 rounded object-cover" />
+                  <img src={c.escudoUrl} alt="" className="h-12 w-12 rounded-full border border-zinc-200 object-cover" />
                 ) : (
-                  <div className="h-8 w-8 rounded bg-zinc-100" />
+                  <div className="h-12 w-12 rounded-full border border-zinc-200 bg-zinc-100" />
                 )}
                 <Link href={`/canchas/${c._id}`} className="flex flex-1 items-center justify-between">
                   <div>
