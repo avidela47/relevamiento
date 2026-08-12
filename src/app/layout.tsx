@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Relevamiento — Itelsa",
+  title: "ITELSA SAS | Relevamiento",
   description: "Relevamiento de columnas de iluminación deportiva — Itelsa Smart Lighting",
 };
 
