@@ -158,10 +158,11 @@ export default function CanchaDetalle() {
   // El lienzo no es solo el tamaño de la cancha: las torres de iluminación suelen
   // estar fuera del rectángulo de juego (en las tribunas). Si hay postes más lejos
   // que el borde de la cancha, agrandamos el área dibujada para que entren, con un
-  // margen extra de aire alrededor del punto más lejano. Para tenis el margen es
-  // más chico (proporcional), porque una cancha de tenis es mucho más chica que
-  // un estadio y el margen fijo de fútbol la dejaba minúscula en el dibujo.
-  const MARGEN_METROS = cancha.tipo === "tenis" ? Math.max(2, cancha.largoX * 0.06) : 15;
+  // margen extra de aire alrededor del punto más lejano.
+  const MARGEN_METROS =
+    cancha.tipo === "tenis" || cancha.tipo === "padel"
+      ? Math.max(2, cancha.largoX * 0.06)
+      : 15;
   const maxAbsX = Math.max(cancha.largoX / 2, ...postes.map((p) => Math.abs(p.x))) + MARGEN_METROS;
   const maxAbsY = Math.max(cancha.anchoY / 2, ...postes.map((p) => Math.abs(p.y))) + MARGEN_METROS;
   const extentX = maxAbsX * 2;
@@ -183,6 +184,12 @@ export default function CanchaDetalle() {
     cancha.tipo === "tenis" && cancha.largoX >= 15 && cancha.anchoY >= 6;
   const TENIS_MEDIO_ANCHO_SINGLE = 8.23 / 2; // 4.115
   const TENIS_LARGO_SERVICIO = 6.4; // desde la red hasta la línea de saque
+
+  // Medidas reglamentarias de pádel, en metros.
+  const esPadelReglamentario =
+    cancha.tipo === "padel" && cancha.largoX >= 12 && cancha.anchoY >= 6;
+  const PADEL_LARGO_SERVICIO = 6.95; // desde la red hasta la línea de saque
+  const PADEL_EXTENSION_CENTRAL = 0.2; // la línea central sigue 20cm más allá de la de saque
 
   // Esquinas de la cancha real (no del lienzo) para dibujar el rectángulo verde de juego.
   const canchaRect = (() => {
@@ -406,6 +413,44 @@ export default function CanchaDetalle() {
                 strokeWidth={1.25}
               />
             </>
+          ) : esPadelReglamentario ? (
+            <>
+              {/* Red, en el centro, a todo el ancho */}
+              <line x1={W / 2} y1={0} x2={W / 2} y2={H} stroke="#4b5563" strokeWidth={2} />
+
+              {/* Líneas de saque, a todo el ancho, a ambos lados de la red */}
+              {[PADEL_LARGO_SERVICIO, -PADEL_LARGO_SERVICIO].map((x) => (
+                <line
+                  key={x}
+                  x1={aSvg(x, cancha.anchoY / 2, extentX, extentY, W, H).px}
+                  y1={aSvg(x, cancha.anchoY / 2, extentX, extentY, W, H).py}
+                  x2={aSvg(x, -cancha.anchoY / 2, extentX, extentY, W, H).px}
+                  y2={aSvg(x, -cancha.anchoY / 2, extentX, extentY, W, H).py}
+                  stroke="#4b5563"
+                  strokeWidth={1.25}
+                />
+              ))}
+
+              {/* Línea central de saque, se pasa 20cm de la línea de saque */}
+              <line
+                x1={
+                  aSvg(-(PADEL_LARGO_SERVICIO + PADEL_EXTENSION_CENTRAL), 0, extentX, extentY, W, H)
+                    .px
+                }
+                y1={
+                  aSvg(-(PADEL_LARGO_SERVICIO + PADEL_EXTENSION_CENTRAL), 0, extentX, extentY, W, H)
+                    .py
+                }
+                x2={
+                  aSvg(PADEL_LARGO_SERVICIO + PADEL_EXTENSION_CENTRAL, 0, extentX, extentY, W, H).px
+                }
+                y2={
+                  aSvg(PADEL_LARGO_SERVICIO + PADEL_EXTENSION_CENTRAL, 0, extentX, extentY, W, H).py
+                }
+                stroke="#4b5563"
+                strokeWidth={1.25}
+              />
+            </>
           ) : (
             <text
               x={(canchaRect.x + canchaRect.width / 2)}
@@ -440,7 +485,9 @@ export default function CanchaDetalle() {
             ? "Marcas reglamentarias FIFA a escala."
             : esTenisReglamentario
               ? "Marcas reglamentarias de tenis (ITF) a escala."
-              : "Rectángulo simple con la medida cargada."}{" "}
+              : esPadelReglamentario
+                ? "Marcas reglamentarias de pádel a escala."
+                : "Rectángulo simple con la medida cargada."}{" "}
           Naranja = poste obstruido, azul = poste normal.
         </p>
       </section>

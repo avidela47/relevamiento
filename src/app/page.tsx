@@ -173,7 +173,7 @@ export default function Home() {
             <div className="flex items-center gap-3 rounded border border-zinc-300 px-3 py-2 text-sm">
               {escudoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={escudoUrl} alt="" className="h-8 w-8 rounded object-contain" />
+                <img src={escudoUrl} alt="" className="h-8 w-8 rounded object-cover" />
               ) : (
                 <div className="h-8 w-8 rounded bg-zinc-100" />
               )}
@@ -226,7 +226,7 @@ export default function Home() {
               <li key={c._id} className="flex items-center gap-3 px-4 py-3 hover:bg-zinc-50">
                 {c.escudoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={c.escudoUrl} alt="" className="h-8 w-8 rounded object-contain" />
+                  <img src={c.escudoUrl} alt="" className="h-8 w-8 rounded object-cover" />
                 ) : (
                   <div className="h-8 w-8 rounded bg-zinc-100" />
                 )}
