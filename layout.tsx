@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Relevamiento — Itelsa",
+  title: "ITELSA SAS | Relevamiento",
   description: "Relevamiento de columnas de iluminación deportiva — Itelsa Smart Lighting",
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-full">
         <div className="flex min-h-screen">
-          <aside className="flex w-60 flex-col bg-[var(--sidebar-bg)] px-4 py-5 text-[var(--sidebar-fg)]">
+          <aside className="flex w-60 flex-col bg-(--sidebar-bg)] px-4 py-5 text-(--sidebar-fg)]">
             <Link href="/" className="mb-8 flex items-center gap-2 px-2">
               <Image
                 src="/logo.png"
@@ -60,10 +60,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </aside>
 
           <div className="flex flex-1 flex-col">
-            <header className="border-b border-[var(--border)] bg-[var(--sidebar-bg)] px-6 py-3">
+            <header className="border-b border-(--border)] bg-(--sidebar-bg)] px-6 py-3">
               <span className="text-sm font-medium text-white">Itelsa Smart Lighting</span>
             </header>
-            <main className="flex-1 bg-[var(--background)] px-6 py-6">
+            <main className="flex-1 bg-(--background)] px-6 py-6">
               <div className="mx-auto w-full max-w-4xl">{children}</div>
             </main>
           </div>
