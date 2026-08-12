@@ -213,7 +213,7 @@ export default function ModelosPage() {
           <button
             type="submit"
             disabled={guardando}
-            className="col-span-2 rounded bg-[var(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50 sm:col-span-4"
+            className="col-span-2 rounded bg-(--accent)] px-3 py-2 text-sm font-medium text-white hover:bg-(--accent-hover)] disabled:opacity-50 sm:col-span-4"
           >
             {guardando ? "Guardando..." : "Agregar modelo"}
           </button>
